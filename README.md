@@ -14,13 +14,18 @@ $ virtualenv venv
 $ source venv/scripts/activate
 
 # Install the dependencies:
-$ pip install -r requirements.txt
+```bash
+pip install -r requirements.txt
+```
 
 # Run the development server:
-$ python app.py
-
+```bash
+python app.py
+```
 # To execute tests, run
-$ python test.py
+```bash
+python test.py
+```
 
-# The URL heroku
+# The heroku URL
 https://capstoneamani.herokuapp.com/
