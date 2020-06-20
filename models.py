@@ -1,5 +1,4 @@
 import os
-import datetime
 from sqlalchemy import Column, String, Integer, DateTime
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -7,11 +6,6 @@ import json
 project_dir = os.path.dirname(os.path.abspath(__file__))
 
 db = SQLAlchemy()
-
-'''
-setup_db(app)
-    binds a flask application and a SQLAlchemy service
-'''
 
 
 def setup_db(app, database_name):
@@ -21,9 +15,11 @@ def setup_db(app, database_name):
     db.app = app
     db.init_app(app)
 
+
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
+
 
 class Movie(db.Model):
     id = Column(Integer().with_variant(Integer, "sqlite"), primary_key=True)
@@ -51,6 +47,7 @@ class Movie(db.Model):
 
     def __repr__(self):
         return json.dumps(self.format())
+
 
 class Actor(db.Model):
     id = Column(Integer().with_variant(Integer, "sqlite"), primary_key=True)
@@ -80,6 +77,7 @@ class Actor(db.Model):
 
     def __repr__(self):
         return json.dumps(self.format())
+
 
 class MovieActor(db.Model):
     # Autoincrementing, unique primary key

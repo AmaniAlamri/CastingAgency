@@ -105,8 +105,9 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_update_movie(self):
-        mv = Movie.query.first()
-        res = self.client().patch('/movies/'+str(mv.id), json=self.new_movie,
+        movie = Movie.query.first()
+        res = self.client().patch('/movies/'+str(movie.id),
+                                  json=self.new_movie,
                                   headers=executive_producer_headers)
         data = json.loads(res.data)
 
@@ -123,8 +124,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable')
 
     def test_delete_movies(self):
-        mv = Movie.query.first()
-        res = self.client().delete('/movies/'+str(mv.id),
+        movie = Movie.query.first()
+        res = self.client().delete('/movies/'+str(movie.id),
                                    headers=executive_producer_headers)
         data = json.loads(res.data)
 
@@ -188,8 +189,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_update_actor(self):
-        ac = Actor.query.first()
-        res = self.client().patch('/actors/'+str(ac.id), json=self.new_actor,
+        actor = Actor.query.first()
+        res = self.client().patch('/actors/'+str(actor.id), json=self.new_actor,
                                   headers=executive_producer_headers)
         data = json.loads(res.data)
 
@@ -206,8 +207,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable')
 
     def test_delete_actors(self):
-        ac = Actor.query.first()
-        res = self.client().delete('/actors/'+str(ac.id),
+        actor = Actor.query.first()
+        res = self.client().delete('/actors/'+str(actor.id),
                                    headers=executive_producer_headers)
         data = json.loads(res.data)
 

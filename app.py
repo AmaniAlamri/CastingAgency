@@ -4,9 +4,8 @@ from sqlalchemy import exc
 import json
 from flask_cors import CORS
 from datetime import datetime
-from models import db_drop_and_create_all, setup_db, Movie, Actor, MovieActor
+from models import setup_db, Movie, Actor, MovieActor
 from auth import AuthError, requires_auth
-from flask_migrate import Migrate
 
 database_name = "database.db"
 
@@ -25,12 +24,12 @@ def create_app(test_config=None, database_name=database_name):
         response.headers.add('Access-Control-Allow-Methods',
                              'GET,PUT,POST,DELETE')
         return response
-    
+
     # Home greeting test
-    
+
     @app.route('/')
     def get_greeting():
-        greeting = "Hello" 
+        greeting = "Welcome to capstone app"
         return greeting
 
     '''
@@ -101,7 +100,6 @@ def create_app(test_config=None, database_name=database_name):
                 'success': True,
                 'movies': [movie.format()]
                 })
-
         except:
             abort(422)
 
@@ -126,10 +124,6 @@ def create_app(test_config=None, database_name=database_name):
 
             abort(422)
 
-    '''
-        GET /actors
-    '''
-
     @app.route('/actors', methods=['GET'])
     @requires_auth('get:actors')
     def get_actors(payload):
@@ -142,10 +136,6 @@ def create_app(test_config=None, database_name=database_name):
                             'actors': formatted_actors})
         except:
             abort(422)
-
-    '''
-        POST /actors
-    '''
 
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actor')
@@ -170,10 +160,6 @@ def create_app(test_config=None, database_name=database_name):
             return jsonify({'success': True, 'actors': [actor.format()]})
         except:
             abort(422)
-
-    '''
-        PATCH /actors/<id>
-    '''
 
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
     @requires_auth('update:actor')
@@ -206,10 +192,6 @@ def create_app(test_config=None, database_name=database_name):
 
         except:
             abort(422)
-
-    '''
-        DELETE /actors/<id>
-    '''
 
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
     @requires_auth('delete:actor')
@@ -245,59 +227,53 @@ def create_app(test_config=None, database_name=database_name):
                     "message": "unprocessable"
                     }), 422
 
-
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
-        "success": False,
-        "error": 404,
-        "message": "resource not found"
+          "success": False,
+          "error": 404,
+          "message": "resource not found"
          }), 404
-
 
     @app.errorhandler(AuthError)
     def auth_error(error):
         return jsonify({
-        "success": False,
-        "error": error.status_code,
-        "message": error.error['description']
-       }), error.status_code
-
+          "success": False,
+          "error": error.status_code,
+          "message": error.error['description']
+          }), error.status_code
 
     @app.errorhandler(401)
     def unauthorized(error):
-           return jsonify({
+        return jsonify({
              "success": False,
              "error": 401,
-              "message": 'Unathorized'
+             "message": 'Unathorized'
               }), 401
-
 
     @app.errorhandler(500)
     def internal_server_error(error):
         return jsonify({
-        "success": False,
-        "error": 500,
-        "message": 'Internal Server Error'
-        }), 500
-
+         "success": False,
+         "error": 500,
+         "message": 'Internal Server Error'
+         }), 500
 
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
-        "success": False,
-        "error": 400,
-        "message": 'Bad Request'
-       }), 400
-
+         "success": False,
+         "error": 400,
+         "message": 'Bad Request'
+        }), 400
 
     @app.errorhandler(405)
     def method_not_allowed(error):
-         return jsonify({
-        "success": False,
-        "error": 405,
-        "message": 'Method Not Allowed'
-       }), 405
+        return jsonify({
+          "success": False,
+          "error": 405,
+          "message": 'Method Not Allowed'
+        }), 405
     return app
 
 
